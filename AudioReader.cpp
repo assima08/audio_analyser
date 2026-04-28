@@ -4,8 +4,8 @@
 
 #include "AudioReader.h"
 
-AudioReader::AudioReader(const std::string& filePath) :filePath(filePath),sample(),sampleRate(0),
-                                                            channels(0){
+AudioReader::AudioReader(const std::string& filePath) : filePath(filePath), samples(), sampleRate(0),
+                                                        channels(0){
 
 }
 /**
@@ -17,8 +17,10 @@ bool AudioReader::load() {
     std::ifstream file(filePath,std::ios::binary );
     if (!file){
         std::cerr<<"Erreur : Fichier introuvable! \n";
-    }
+        return false;
+    }samples.clear();
     std::cout<<"FIchier ouvert avec succès ! \n";
+
     return true;
 }
 /**
@@ -36,11 +38,11 @@ size_t AudioReader::getChannels() const {
     return channels;
 }
 /**
- * \brief Accesseur du vector sample
+ * \brief Accesseur du vector samples
  * @return
  */
 const std::vector<double> &AudioReader::getSamples() const {
-    return sample;
+    return samples;
 }
 /**
  * \brief Accesseur de frame (le nombre d'unités de temps audio)
@@ -50,6 +52,6 @@ size_t AudioReader::getNumFrames() const {
     if (channels == 0) {
         return 0;
     }
-    return sample.size();
+    return samples.size();
 }
 
