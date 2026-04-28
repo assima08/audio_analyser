@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget* parent)
     resize(900, 300);
 
     // charger le fichier audio
-    AudioReader reader("C:/Users/faba/Documents/portefolio/audioAnalyser/91BPM_DMaj_BRKTHRU_Horn_Loop.wav");
+    AudioReader reader("C:/Users/faba/Documents/Splice/Samples/packs/Arcando Future Pop/Dropgun_Samples_-_Arcando_Future_Pop/One_Shots/Vocal_One_Shots/Phrase_One_Shots/DS_ARCANDO_vocal_phrase_male_one_shot_ayo_dj.wav");
     reader.load();
 
     // widget central

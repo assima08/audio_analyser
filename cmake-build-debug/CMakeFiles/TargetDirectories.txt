@@ -1,3 +1,0 @@
-C:/Users/faba/Documents/portefolio/audioAnalyser/cmake-build-debug/CMakeFiles/app_exec.dir
-C:/Users/faba/Documents/portefolio/audioAnalyser/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/faba/Documents/portefolio/audioAnalyser/cmake-build-debug/CMakeFiles/rebuild_cache.dir
