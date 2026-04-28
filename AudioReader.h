@@ -7,6 +7,7 @@
 #include "fstream"
 #include "vector"
 #include <cstdint>
+#include "sstream"
 
 
 class AudioReader {
@@ -20,6 +21,7 @@ public:
     size_t                  getChannels()const;
     const std::vector<double>& getSamples()const;
     size_t                   getNumFrames()const;
+    std::string              reqAudioFormate()const;
 
 private:
     //reference pour le format audio : https://www.rtlaudiolab.com/009-reading-wave-files-in-systemverilog/
@@ -27,7 +29,7 @@ private:
 #pragma pack(push,1) //eviter les espaces entre les champs
     struct RIFFHeader{
         char chunkId[4];
-        uint16_t chunkSize ;
+        uint32_t chunkSize ;
         char format[4] ;
     };
 

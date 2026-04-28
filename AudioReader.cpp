@@ -9,9 +9,9 @@ AudioReader::AudioReader(const std::string& filePath) : filePath(filePath), samp
 
 }
 /**
- * \brief implémentation de la classe AudioReader qui vérifie la validité du fichier.
+ * \brief implémentation de la classe AudioReader qui vérifie la validité du fichier et en extrait les informations.
  * @param p_nomFichier
- * @return un bool si un fichier à bien été trouvé
+ * @return un bool si un fichier à bien été trouvé et traité
  */
 bool AudioReader::load() {
     //on verifie la validité du fichier
@@ -24,8 +24,9 @@ bool AudioReader::load() {
     RIFFHeader riff;
     //Prendre la taille de RIFFHeader, et recuperer les emplacement qui correspondent pour stocker dans riff
     file.read(reinterpret_cast<char*>(&riff),sizeof(RIFFHeader));
+
     //si ces carractère ne sont ni "RIFF" ni "WAVE", ce n'est pas un fichier WAVE.
-    if (std::string (riff.chunkId,4) != "RIFF" || std::string (riff.chunkId,4) != "WAVE"){
+    if (std::string (riff.chunkId,4) != "RIFF" || std::string (riff.format,4) != "WAVE"){
         std::cerr<<"Erreur ! Ce n'est pas un fichier WAV valide \n";
         return false;
     }
@@ -33,11 +34,12 @@ bool AudioReader::load() {
     //2 - lire la partie FMT
     FMTChunk fmt;
     file.read(reinterpret_cast<char*>(&fmt),sizeof(FMTChunk));
-    if (std::string(fmt.subChunk1Id,4) !="fmt"){
+
+    if (std::string(fmt.subChunk1Id,4) !="fmt "){
         std::cerr<<"Erreur ! FMT introuvable \n";
         return false;
     }
-    if (fmt.audioFormat |= 1 ){
+    if (fmt.audioFormat != 1 ){
         std::cerr<<"Erreur ! Seul le format PCM non compressé est supporté \n";
         return false;
     }
@@ -47,12 +49,12 @@ bool AudioReader::load() {
 
     // 3 - Lire la partie DATA
     DATAChunk data;
-    while (file.read(reinterpret_cast<char*>(&data), sizeof(data))){
+    while (file.read(reinterpret_cast<char*>(&data), sizeof(data))) {
         //validons l'entête de la partie data
-        if(std::string(data.subChunk2Id,4) == "data"){
+        if (std::string(data.subChunk2Id, 4) == "data") {
             break;
-            file.seekg(data.subChunk2Size, std::ios::cur);
-        }
+        }file.seekg(data.subChunk2Size, std::ios::cur);
+    }
         //4 - lire la partie sample
         size_t numSamples = data.subChunk2Size / (fmt.bitsPerSample / 8);
         samples.reserve(numSamples);//alloue de l'espace correspondant au sample pour le remplir après
@@ -71,7 +73,7 @@ bool AudioReader::load() {
             std::cerr << "Erreur : " << fmt.bitsPerSample << " bits non supporté\n";
             return false;
         }
-    }return true;
+    return true;
 }
 
 
@@ -103,4 +105,15 @@ const std::vector<double> &AudioReader::getSamples() const {
 
 size_t AudioReader::getNumFrames() const {
     return channels > 0 ? samples.size() / channels : 0;
+}
+/**
+ * \brief implantaion de l'accesseur reqAudioFormate
+ * @return un string qui affiche les informations sur l'audio.
+ */
+std::string AudioReader::reqAudioFormate() const {
+    std::ostringstream os;
+    os<<"TITRE : "<<this->filePath<<"\n"
+    <<"Sample Rate : "<< this->getSampleRate()<<"\n"
+    <<"Channels number : "<< this->getChannels()<<"\n";
+    return os.str();
 }
