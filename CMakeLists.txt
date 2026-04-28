@@ -3,6 +3,14 @@ project(audioAnalyser)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(audioAnalyser
+# Trouver Qt
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+
+add_executable(app_exec
         AudioReader.cpp
+        WaveformWidget.cpp
+        MainWindow.cpp
         main.cpp)
+
+# Lier Qt
+target_link_libraries(app_exec Qt6::Widgets)

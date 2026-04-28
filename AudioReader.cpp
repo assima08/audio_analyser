@@ -69,6 +69,18 @@ bool AudioReader::load() {
             while (file.read(reinterpret_cast<char*>(&raw), sizeof(uint8_t)))
                 samples.push_back((raw - 128) / 128.0);
         }
+        else if (fmt.bitsPerSample == 24) {
+            // 24-bit = 3 octets par sample, pas de type natif en C++
+            uint8_t raw[3];
+            while (file.read(reinterpret_cast<char*>(raw), 3)) {
+                // reconstituer un entier signé 24-bit
+                int32_t value = (raw[2] << 16) | (raw[1] << 8) | raw[0];
+                // étendre le signe si le bit 23 est à 1
+                if (value & 0x800000)
+                    value |= 0xFF000000;
+                samples.push_back(value / 8388608.0); // 2^23 = 8388608
+            }
+        }
         else {
             std::cerr << "Erreur : " << fmt.bitsPerSample << " bits non supporté\n";
             return false;

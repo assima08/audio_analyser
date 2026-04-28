@@ -35,17 +35,17 @@ private:
 
     //FMT
 
+    // ✅ ordre correct selon la spec WAV
     struct FMTChunk {
-        char subChunk1Id[4] ;
-        uint32_t subChunk1Size;
-        uint16_t audioFormat ;
-        uint16_t  numChannels;
-        uint32_t sampleRate;
-        uint16_t bitsPerSample;
-        uint32_t byteRate;
-        uint16_t blockAlign ;
+        char     subChunk1Id[4];   // "fmt "
+        uint32_t subChunk1Size;    // 16
+        uint16_t audioFormat;      // 1 = PCM
+        uint16_t numChannels;      // 1 ou 2
+        uint32_t sampleRate;       // 44100...
+        uint32_t byteRate;         // ← avant blockAlign
+        uint16_t blockAlign;       // ← avant bitsPerSample
+        uint16_t bitsPerSample;    // ← en dernier
     };
-
     //DATA
     struct DATAChunk{
         char subChunk2Id[4];
