@@ -6,6 +6,7 @@
 #include "iostream"
 #include "fstream"
 #include "vector"
+#include <cstdint>
 
 
 class AudioReader {
@@ -23,31 +24,32 @@ public:
 private:
     //reference pour le format audio : https://www.rtlaudiolab.com/009-reading-wave-files-in-systemverilog/
     //Riff Chunk ( entête du fichier )
-    struct RIFF{
-        const std::string chunkId = "RIFF";
-        const std::string chunkSize = "---";
-        const std::string format = "WAVE";
+#pragma pack(push,1) //eviter les espaces entre les champs
+    struct RIFFHeader{
+        char chunkId[4];
+        uint16_t chunkSize ;
+        char format[4] ;
     };
 
     //FMT
 
-    struct FMT {
-        const std::string subChunk1Id = "fmt";
-        const int subChunk1Size = 16;
-        const int audioFormat = 1;
-        const size_t numChannels = 2;
-        const int sampleRate = sampleRate;
-        const int bitsPerSample = 16;
-        const int byteRate = sampleRate * numChannels *(bitsPerSample/8);
-        const int blockAlign = numChannels * (bitsPerSample /8);
+    struct FMTChunk {
+        char subChunk1Id[4] ;
+        uint32_t subChunk1Size;
+        uint16_t audioFormat ;
+        uint16_t  numChannels;
+        uint32_t sampleRate;
+        uint16_t bitsPerSample;
+        uint32_t byteRate;
+        uint16_t blockAlign ;
     };
 
     //DATA
-    struct DATA{
-        const std::string subChunk2Id = "data";
-        const std::string subChunk2Size = "----";
+    struct DATAChunk{
+        char subChunk2Id[4];
+        uint32_t subChunk2Size ;
     };
-
+#pragma  pack(pop)
     std::string             filePath;
     std::vector<double>     samples;         //le son lui même
     int                     sampleRate;     //rythme du signal
