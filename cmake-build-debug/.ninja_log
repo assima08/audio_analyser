@@ -1,0 +1,14 @@
+# ninja log v5
+27	593	7990405980710542	CMakeFiles/audioAnalyser.dir/main.cpp.obj	eb5b37cb49a92130
+1	675	7990405981460893	CMakeFiles/audioAnalyser.dir/AudioReader.cpp.obj	3206ddc923068c5d
+675	1001	7990405984639552	audioAnalyser.exe	160fd3a42be3c89b
+2	340	7990415665098856	CMakeFiles/audioAnalyser.dir/AudioReader.cpp.obj	3206ddc923068c5d
+341	475	7990415666366717	audioAnalyser.exe	160fd3a42be3c89b
+3	308	7990420043802746	CMakeFiles/audioAnalyser.dir/AudioReader.cpp.obj	3206ddc923068c5d
+308	453	7990420045202971	audioAnalyser.exe	160fd3a42be3c89b
+3	365	7990420588698794	CMakeFiles/audioAnalyser.dir/AudioReader.cpp.obj	3206ddc923068c5d
+369	509	7990420590127231	audioAnalyser.exe	160fd3a42be3c89b
+2	279	7990425015093465	CMakeFiles/audioAnalyser.dir/AudioReader.cpp.obj	3206ddc923068c5d
+279	391	7990425016153165	audioAnalyser.exe	160fd3a42be3c89b
+2	276	7990427459840761	CMakeFiles/audioAnalyser.dir/AudioReader.cpp.obj	3206ddc923068c5d
+276	410	7990427461119949	audioAnalyser.exe	160fd3a42be3c89b
